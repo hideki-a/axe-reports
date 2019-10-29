@@ -101,7 +101,7 @@ exports.createTsvReportHeaderRow = function () {
 };
 
 exports.createCsvReportHeaderRow = function () {
-    console.log('URL,Volation Type,Impact,Help,HTML Element,Messages,DOM Element\r');
+    console.log('URL,Result Type,Issue Type,Impact,Help,HTML Element,Messages,DOM Element\r');
 };
 
 exports.createTsvReportRow = function (results) {
@@ -276,7 +276,7 @@ exports.createTsvReport = function (results) {
     }
 };
 
-exports.createCsvReportRow = function (results) {
+function outputCsvReportRow(issueClass, objects, url) {
     var any,
         anyCount,
         anys,
@@ -291,73 +291,99 @@ exports.createCsvReportRow = function (results) {
         target,
         targetCount,
         targets,
-        url = results.url,
-        violation,
+        objectsCount = objects.length;
+
+    for (i = 0; i < objectsCount; i += 1) {
+        object = objects[i];
+        nodes = object.nodes;
+        impact = object.impact || '';
+
+        if (typeof nodes !== 'undefined') {
+            outputRow += url.replace(/,/g, '-') + ',' + issueClass + ',' + object.id.replace(/,/g, '-') + ',' + impact.replace(/,/g, '-') + ',' + object.helpUrl.replace(/,/g, '-');
+            outputRowPrefix = outputRow;
+            nodeCount = nodes.length;
+
+            for (j = 0; j < nodeCount; j += 1) {
+                node = nodes[j];
+
+                if (typeof node !== 'undefined') {
+                    if (j !== 0) {
+                        outputRow = outputRowPrefix;
+                    }
+
+                    outputRow += ',' + node.html.replace(/,/g, '-') + ',';
+                    anys = node.any;
+                    targets = node.target;
+
+                    if (typeof anys !== 'undefined') {
+                        anyCount = anys.length;
+
+                        for (k = 0; k < anyCount; k += 1) {
+                            if (k !== 0) {
+                                outputRow += '--';
+                            }
+
+                            any = anys[k];
+                            outputRow += any.message.replace(/,/g, '-');
+                        }
+                    }
+
+                    outputRow += ',';
+
+                    if (typeof targets !== 'undefined') {
+                        targetCount = targets.length;
+
+                        for (k = 0; k < targetCount; k += 1) {
+                            if (k !== 0) {
+                                outputRow += '--';
+                            }
+
+                            target = targets[k];
+                            outputRow += target.replace(/,/g, '-');
+                        }
+                    }
+
+                    outputRow = outputRow.replace(/(\r\n|\n|\r)/gm, '');
+                    console.log(outputRow + '\r');
+                    outputRow = '';
+                }
+            }
+        }
+        outputRowPrefix = '';
+    }
+}
+
+exports.createCsvReportRow = function (results) {
+    var url = results.url,
         violationCount,
-        violations = results.violations;
+        violations = results.violations,
+        incompleteCount,
+        incompletes = results.incomplete,
+        inapplicableCount,
+        inapplicables = results.inapplicable;
 
     if (typeof violations !== 'undefined') {
         violationCount = violations.length;
 
         if (violationCount > 0) {
-            for (i = 0; i < violationCount; i += 1) {
-                violation = violations[i];
-                nodes = violation.nodes;
+            outputCsvReportRow('Violation', violations, url);
+        }
+    }
 
-                if (typeof nodes !== 'undefined') {
-                    outputRow += url.replace(/,/g , '-') + ',' + violation.id.replace(/,/g , '-') + ',' + violation.impact.replace(/,/g , '-') + ',' + violation.helpUrl.replace(/,/g , '-');
-                    outputRowPrefix = outputRow;
-                    nodeCount = nodes.length;
+    if (typeof incompletes !== 'undefined') {
+        incompleteCount = incompletes.length;
 
-                    for (j = 0; j < nodeCount; j += 1) {
-                        node = nodes[j];
+        if (incompleteCount > 0) {
+            outputCsvReportRow('Incomplete', incompletes, url);
+        }
+    }
 
-                        if (typeof node !== 'undefined') {
-                            if (j !== 0) {
-                                outputRow = outputRowPrefix;
-                            }
+    if (typeof inapplicables !== 'undefined') {
+        inapplicableCount = inapplicables.length;
 
-                            outputRow += ',' + node.html.replace(/,/g , '-') + ',';
-                            anys = node.any;
-                            targets = node.target;
-
-                            if (typeof anys !== 'undefined') {
-                                anyCount = anys.length;
-
-                                for (k = 0; k < anyCount; k += 1) {
-                                    if (k !== 0) {
-                                        outputRow += '--';
-                                    }
-
-                                    any = anys[k];
-                                    outputRow += any.message.replace(/,/g , '-');
-                                }
-                            }
-
-                            outputRow += ',';
-
-                            if (typeof targets !== 'undefined') {
-                                targetCount = targets.length;
-
-                                for (k = 0; k < targetCount; k += 1) {
-                                    if (k !== 0) {
-                                        outputRow += '--';
-                                    }
-
-                                    target = targets[k];
-                                    outputRow += target.replace(/,/g , '-');
-                                }
-                            }
-
-                            outputRow = outputRow.replace(/(\r\n|\n|\r)/gm,'');
-                            console.log(outputRow + '\r');
-                            outputRow = '';
-                        }
-                    }
-                }
-                outputRowPrefix = '';
-            }
-        } 
+        if (inapplicableCount > 0) {
+            outputCsvReportRow('Inapplicable', inapplicables, url);
+        }
     }
 };
 
