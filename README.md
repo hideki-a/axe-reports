@@ -1,9 +1,7 @@
 # aXe Reports
 
-[![Version](https://img.shields.io/npm/v/axe-reports.svg)](https://www.npmjs.com/package/axe-reports)
-[![License](https://img.shields.io/npm/l/axe-reports.svg)](http://opensource.org/licenses/MIT)
-
-Create human readable reports from the results object created by the aXe analyze function.
+Create human readable reports from the results object created by the aXe analyze function.  
+Forked [louis-reed/axe-reports](https://github.com/louis-reed/axe-reports).
 
 ## Getting Started
 
@@ -213,7 +211,8 @@ node tsv_testname => results.tsv
 
 ## Authors
 
-**Louis Reed** - [Louis Reed](https://github.com/louis-reed)
+- **Hideki Abe** - [Hideki Abe](https://github.com/hideki-a)
+- **Louis Reed** - [Louis Reed](https://github.com/louis-reed)
 
 ## License
 

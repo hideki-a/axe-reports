@@ -1,18 +1,18 @@
 {
-  "name": "axe-reports",
+  "name": "@hideki_a/axe-reports",
   "version": "1.1.11",
   "description": "Create human readable reports from the results object created by the aXe analyze function.",
   "main": "axe-reports.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "louisreedjr",
+  "author": "Hideki Abe",
   "license": "MIT",
   "dependencies": {},
   "devDependencies": {},
   "repository": {
     "type": "git",
-    "url": "louis-reed"
+    "url": "git+https://github.com/hideki-a/axe-reports.git"
   },
   "keywords": [
     "accessibility",
