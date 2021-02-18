@@ -100,8 +100,12 @@ exports.createTsvReportHeaderRow = function () {
     console.log('URL\tVolation Type\tImpact\tHelp\tHTML Element\tMessages\tDOM Element\r');
 };
 
-exports.createCsvReportHeaderRow = function () {
-    console.log('URL,Result Type,Issue Type,Impact,Help,HTML Element,Messages,DOM Element\r');
+exports.createCsvReportHeaderRow = function (logger = null) {
+    if (logger) {
+        logger.log('URL,Result Type,Issue Type,Impact,Help,HTML Element,Messages,DOM Element\r');
+    } else {
+        console.log('URL,Result Type,Issue Type,Impact,Help,HTML Element,Messages,DOM Element\r');
+    }
 };
 
 exports.createTsvReportRow = function (results) {
@@ -276,7 +280,7 @@ exports.createTsvReport = function (results) {
     }
 };
 
-function outputCsvReportRow(issueClass, objects, url) {
+function outputCsvReportRow(issueClass, objects, url, logger = null) {
     var any,
         anyCount,
         anys,
@@ -344,7 +348,11 @@ function outputCsvReportRow(issueClass, objects, url) {
                     }
 
                     outputRow = outputRow.replace(/(\r\n|\n|\r)/gm, '');
-                    console.log(outputRow + '\r');
+                    if (logger) {
+                        logger.log(outputRow + '\r');
+                    } else {
+                        console.log(outputRow + '\r');
+                    }
                     outputRow = '';
                 }
             }
@@ -353,7 +361,7 @@ function outputCsvReportRow(issueClass, objects, url) {
     }
 }
 
-exports.createCsvReportRow = function (results) {
+exports.createCsvReportRow = function (results, logger = null) {
     var url = results.url,
         violationCount,
         violations = results.violations,
@@ -366,7 +374,7 @@ exports.createCsvReportRow = function (results) {
         violationCount = violations.length;
 
         if (violationCount > 0) {
-            outputCsvReportRow('Violation', violations, url);
+            outputCsvReportRow('Violation', violations, url, logger);
         }
     }
 
@@ -374,7 +382,7 @@ exports.createCsvReportRow = function (results) {
         incompleteCount = incompletes.length;
 
         if (incompleteCount > 0) {
-            outputCsvReportRow('Incomplete', incompletes, url);
+            outputCsvReportRow('Incomplete', incompletes, url, logger);
         }
     }
 
@@ -382,7 +390,7 @@ exports.createCsvReportRow = function (results) {
         inapplicableCount = inapplicables.length;
 
         if (inapplicableCount > 0) {
-            outputCsvReportRow('Inapplicable', inapplicables, url);
+            outputCsvReportRow('Inapplicable', inapplicables, url, logger);
         }
     }
 };
