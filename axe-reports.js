@@ -321,14 +321,19 @@ function outputCsvReportRow(issueClass, objects, url, logger = null) {
 
                     if (typeof anys !== 'undefined') {
                         anyCount = anys.length;
+                        if (anyCount) {
+                            for (k = 0; k < anyCount; k += 1) {
+                                if (k !== 0) {
+                                    outputRow += '--';
+                                }
 
-                        for (k = 0; k < anyCount; k += 1) {
-                            if (k !== 0) {
-                                outputRow += '--';
+                                any = anys[k];
+                                outputRow += any.message.replace(/,/g, '-');
                             }
-
-                            any = anys[k];
-                            outputRow += any.message.replace(/,/g, '-');
+                        } else {
+                            if (object.help) {
+                                outputRow += object.help;
+                            }
                         }
                     }
 
