@@ -328,7 +328,9 @@ function outputCsvReportRow(issueClass, objects, url, logger = null) {
                                 }
 
                                 any = anys[k];
-                                outputRow += any.message.replace(/,/g, '-');
+                                if (any.message) {
+                                    outputRow += any.message.replace(/,/g, '-');
+                                }
                             }
                         } else {
                             if (object.help) {
