@@ -100,11 +100,19 @@ exports.createTsvReportHeaderRow = function () {
     console.log('URL\tVolation Type\tImpact\tHelp\tHTML Element\tMessages\tDOM Element\r');
 };
 
-exports.createCsvReportHeaderRow = function (logger = null) {
+exports.createCsvReportHeaderRow = function (locale = null, logger = null) {
     if (logger) {
-        logger.log('URL,Result Type,Issue Type,Impact,Help,HTML Element,Messages,DOM Element\r');
+        if (locale === 'ja') {
+            logger.log('URL,結果の種別,問題の種類,影響度,ヘルプページ,要素のソース,問題の説明,要素の位置\r');
+        } else {
+            logger.log('URL,Result Type,Issue Type,Impact,Help,HTML Element,Messages,DOM Element\r');
+        }
     } else {
-        console.log('URL,Result Type,Issue Type,Impact,Help,HTML Element,Messages,DOM Element\r');
+        if (locale === 'ja') {
+            console.log('URL,結果の種別,問題の種類,影響度,ヘルプページ,要素のソース,問題の説明,要素の位置\r');
+        } else {
+            console.log('URL,Result Type,Issue Type,Impact,Help,HTML Element,Messages,DOM Element\r');
+        }
     }
 };
 
