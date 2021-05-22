@@ -1,6 +1,6 @@
 {
   "name": "@hideki_a/axe-reports",
-  "version": "1.3.0",
+  "version": "1.4.0",
   "description": "Create human readable reports from the results object created by the aXe analyze function.",
   "main": "axe-reports.js",
   "scripts": {
