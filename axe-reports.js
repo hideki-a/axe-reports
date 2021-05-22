@@ -116,6 +116,25 @@ exports.createCsvReportHeaderRow = function (locale = null, logger = null) {
     }
 };
 
+function translate(text, locale = null) {
+    const ja = {
+        'Violation': '違反',
+        'Incomplete': '要確認',
+        'Inapplicable': '該当なし',
+        'critical': '緊急 (Critical)',
+        'serious': '深刻 (Serious)',
+        'moderate':  '普通 (Moderate)',
+        'minor': '軽微 (Minor)',
+    };
+
+    if (locale === 'ja') {
+        if (ja[text]) {
+            return ja[text];
+        }
+    }
+    return text;
+}
+
 exports.createTsvReportRow = function (results) {
     var any,
         anyCount,
@@ -288,7 +307,7 @@ exports.createTsvReport = function (results) {
     }
 };
 
-function outputCsvReportRow(issueClass, objects, url, logger = null) {
+function outputCsvReportRow(issueClass, objects, url, locale = null, logger = null) {
     var any,
         anyCount,
         anys,
@@ -311,7 +330,7 @@ function outputCsvReportRow(issueClass, objects, url, logger = null) {
         impact = object.impact || '';
 
         if (typeof nodes !== 'undefined') {
-            outputRow += url.replace(/,/g, '-') + ',' + issueClass + ',' + object.id.replace(/,/g, '-') + ',' + impact.replace(/,/g, '-') + ',' + object.helpUrl.replace(/,/g, '-');
+            outputRow += url.replace(/,/g, '-') + ',' + translate(issueClass, locale) + ',' + object.id.replace(/,/g, '-') + ',' + translate(impact.replace(/,/g, '-'), locale) + ',' + object.helpUrl.replace(/,/g, '-');
             outputRowPrefix = outputRow;
             nodeCount = nodes.length;
 
@@ -376,7 +395,7 @@ function outputCsvReportRow(issueClass, objects, url, logger = null) {
     }
 }
 
-exports.createCsvReportRow = function (results, logger = null) {
+exports.createCsvReportRow = function (results, locale = null, logger = null) {
     var url = results.url,
         violationCount,
         violations = results.violations,
@@ -389,7 +408,7 @@ exports.createCsvReportRow = function (results, logger = null) {
         violationCount = violations.length;
 
         if (violationCount > 0) {
-            outputCsvReportRow('Violation', violations, url, logger);
+            outputCsvReportRow('Violation', violations, url, locale, logger);
         }
     }
 
@@ -397,7 +416,7 @@ exports.createCsvReportRow = function (results, logger = null) {
         incompleteCount = incompletes.length;
 
         if (incompleteCount > 0) {
-            outputCsvReportRow('Incomplete', incompletes, url, logger);
+            outputCsvReportRow('Incomplete', incompletes, url, locale, logger);
         }
     }
 
@@ -405,7 +424,7 @@ exports.createCsvReportRow = function (results, logger = null) {
         inapplicableCount = inapplicables.length;
 
         if (inapplicableCount > 0) {
-            outputCsvReportRow('Inapplicable', inapplicables, url, logger);
+            outputCsvReportRow('Inapplicable', inapplicables, url, locale, logger);
         }
     }
 };
