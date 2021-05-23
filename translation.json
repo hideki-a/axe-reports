@@ -1,0 +1,14 @@
+{
+    "ja": {
+        "header": "URL,結果の種別,問題の種類,影響度,ヘルプページ,要素のソース,問題の説明,要素の位置",
+        "phrase": {
+            "Violation": "違反",
+            "Incomplete": "要確認",
+            "Inapplicable": "該当なし",
+            "critical": "緊急 (Critical)",
+            "serious": "深刻 (Serious)",
+            "moderate":  "普通 (Moderate)",
+            "minor": "軽微 (Minor)"
+        }
+    }
+}

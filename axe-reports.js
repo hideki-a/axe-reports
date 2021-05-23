@@ -5,6 +5,8 @@ var FILE_TYPE = {
 
 var fs = require('fs');
 
+const translation = require('./translation.json');
+
 exports.createBasicReport = function (results) {
     var any,
         anyCount,
@@ -102,14 +104,14 @@ exports.createTsvReportHeaderRow = function () {
 
 exports.createCsvReportHeaderRow = function (locale = null, logger = null) {
     if (logger) {
-        if (locale === 'ja') {
-            logger.log('URL,結果の種別,問題の種類,影響度,ヘルプページ,要素のソース,問題の説明,要素の位置\r');
+        if (translation[locale]['header']) {
+            logger.log(translation[locale]['header'] + '\r');
         } else {
             logger.log('URL,Result Type,Issue Type,Impact,Help,HTML Element,Messages,DOM Element\r');
         }
     } else {
-        if (locale === 'ja') {
-            console.log('URL,結果の種別,問題の種類,影響度,ヘルプページ,要素のソース,問題の説明,要素の位置\r');
+        if (translation[locale]['header']) {
+            console.log(translation[locale]['header'] + '\r');
         } else {
             console.log('URL,Result Type,Issue Type,Impact,Help,HTML Element,Messages,DOM Element\r');
         }
@@ -117,20 +119,8 @@ exports.createCsvReportHeaderRow = function (locale = null, logger = null) {
 };
 
 function translate(text, locale = null) {
-    const ja = {
-        'Violation': '違反',
-        'Incomplete': '要確認',
-        'Inapplicable': '該当なし',
-        'critical': '緊急 (Critical)',
-        'serious': '深刻 (Serious)',
-        'moderate':  '普通 (Moderate)',
-        'minor': '軽微 (Minor)',
-    };
-
-    if (locale === 'ja') {
-        if (ja[text]) {
-            return ja[text];
-        }
+    if (translation[locale]['phrase'][text]) {
+        return translation[locale]['phrase'][text];
     }
     return text;
 }
