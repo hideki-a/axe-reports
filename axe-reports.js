@@ -107,13 +107,13 @@ exports.createCsvReportHeaderRow = function (locale = null, logger = null) {
         if (translation[locale]['header']) {
             logger.log(translation[locale]['header'] + '\r');
         } else {
-            logger.log('URL,Result Type,Issue Type,Impact,Help,HTML Element,Messages,DOM Element\r');
+            logger.log('URL,Result Type,Rule ID,Impact,Help,HTML Element,Messages,DOM Element\r');
         }
     } else {
         if (translation[locale]['header']) {
             console.log(translation[locale]['header'] + '\r');
         } else {
-            console.log('URL,Result Type,Issue Type,Impact,Help,HTML Element,Messages,DOM Element\r');
+            console.log('URL,Result Type,Rule ID,Impact,Help,HTML Element,Messages,DOM Element\r');
         }
     }
 };
